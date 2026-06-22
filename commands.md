@@ -12,3 +12,7 @@ docker compose up -d
 docker compose down
 docker compose logs
 
+docker build -t ayushshende9/pet-clinic:1.0.0 .
+docker push ayushshende9/pet-clinic:1.0.0
+
+kind create cluster --config k8s/cluster.yaml --name pet-clinic-kube-cluster
