@@ -1,7 +1,10 @@
 FROM eclipse-temurin:17
-RUN addgroup --system spring && adduser --system --ingroup spring spring
-USER spring:spring
+WORKDIR /app
+ARG UID=10001
+ARG GID=10001
+RUN groupadd -g ${GID} spring && useradd -u ${UID} -g spring -m -s /usr/sbin/nologin spring
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
+USER ${UID}:${GID}
 EXPOSE 8080
-ENTRYPOINT [ "java", "-jar", "/app.jar" ]
+ENTRYPOINT [ "java", "-jar", "app.jar" ]

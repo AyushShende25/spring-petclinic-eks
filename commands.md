@@ -24,3 +24,23 @@ kubectl apply -f k8s/db/service.yaml
 kubectl apply -f k8s/db/statefulset.yaml
 kubectl get all -n pet-clinic-db
 kubectl logs mysql-0 -n pet-clinic-db
+
+kubectl create secret docker-registry dockerhub-secret \
+  --docker-server=https://index.docker.io/v1/ \
+  --docker-username=<username> \
+  --docker-password=<dockerhub-pat> \
+  --docker-email=<email> \
+  -n pet-clinic-app
+kubectl delete secret dockerhub-secret -n pet-clinic-app
+kubectl get secrets -n pet-clinic-app
+
+kubectl apply -f k8s/app/deployment.yaml
+kubectl delete -f k8s/app/deployment.yaml
+kubectl rollout restart deployment petclinic-app -n pet-clinic-app
+kubectl get pods -n pet-clinic-app -w
+kubectl describe pods -n pet-clinic-app
+kubectl logs petclinic-app-56dbc4d9c6-s6wgx -n pet-clinic-app
+
+kubectl create sa dockerhub-sa -n pet-clinic-app
+kubectl get sa dockerhub-sa -n pet-clinic-app -o yaml
+kubectl edit sa dockerhub-sa -n pet-clinic-app
