@@ -16,3 +16,11 @@ docker build -t ayushshende9/pet-clinic:1.0.0 .
 docker push ayushshende9/pet-clinic:1.0.0
 
 kind create cluster --config k8s/cluster.yaml --name pet-clinic-kube-cluster
+
+kubectl apply -f k8s/db/secrets.yaml
+kubectl get secrets -n pet-clinic-db
+kubectl apply -f k8s/db/cm.yaml
+kubectl apply -f k8s/db/service.yaml
+kubectl apply -f k8s/db/statefulset.yaml
+kubectl get all -n pet-clinic-db
+kubectl logs mysql-0 -n pet-clinic-db
