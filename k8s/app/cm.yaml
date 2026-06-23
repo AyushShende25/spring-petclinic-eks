@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: petclinic-config
+  namespace: pet-clinic-app
+data:
+  MYSQL_URL: jdbc:mysql://mysql.pet-clinic-db.svc.cluster.local:3306/petclinic
