@@ -55,8 +55,35 @@ kubectl get sa dockerhub-sa -n pet-clinic-app -o yaml
 kubectl edit sa dockerhub-sa -n pet-clinic-app
 
 eksctl create cluster -f k8s/eks-cluster.yaml
-
+kubectl get nodes --show-labels
 kubectl config set-context --current --namespace=pet-clinic-db
 
 kubectl port-forward svc/petclinic-svc 8080:8080
 
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.14.1/docs/install/iam_policy.json
+
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+
+eksctl create iamserviceaccount \
+    --cluster=petclinic \
+    --namespace=kube-system \
+    --name=aws-load-balancer-controller \
+    --attach-policy-arn=arn:aws:iam::<aws-account-id>:policy/AWSLoadBalancerControllerIAMPolicy \
+    --override-existing-serviceaccounts \
+    --region ap-south-1 \
+    --approve
+
+helm repo add eks https://aws.github.io/eks-charts
+
+helm repo update eks
+
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=petclinic \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --version 1.14.0
+  
+kubectl get deployment -n kube-system aws-load-balancer-controller
