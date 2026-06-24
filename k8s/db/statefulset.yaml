@@ -63,8 +63,9 @@ spec:
     - metadata:
         name: mysql-data
       spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "standard"
+        accessModes: ["ReadWriteOncePod"]
+        # storageClassName: "standard"
+        storageClassName: "ebs-sc-gp3"
         resources:
           requests:
-            storage: 1Gi
+            storage: 5Gi
