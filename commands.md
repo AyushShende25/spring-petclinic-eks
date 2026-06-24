@@ -87,3 +87,22 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --version 1.14.0
   
 kubectl get deployment -n kube-system aws-load-balancer-controller
+
+aws eks describe-cluster --name petclinic \
+  --query "cluster.identity.oidc.issuer" --output text
+
+aws iam create-policy --policy-name "AllowExternalDNSUpdates" --policy-document file://external-dns-policy.json
+aws iam list-policies
+eksctl create iamserviceaccount \
+  --cluster petclinic \
+  --name "external-dns" \
+  --namespace external-dns \
+  --attach-policy-arn arn:aws:iam::<aws-ccount-id>:policy/AllowExternalDNSUpdates \
+  --approve
+
+helm repo add --force-update external-dns https://kubernetes-sigs.github.io/external-dns/
+helm repo update
+helm install external-dns external-dns/external-dns \
+  -n external-dns \
+  -f external-dns-values.yaml
+kubectl get pods -n external-dns -l app.kubernetes.io/name=external-dns

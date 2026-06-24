@@ -1,0 +1,22 @@
+provider:
+  name: aws
+env:
+  - name: AWS_DEFAULT_REGION
+    value: ap-south-1
+serviceAccount:
+  create: false
+  name: external-dns
+
+domainFilters:
+  - fullstackprojects.dev # Only manage records for this domain
+
+policy: sync # sync will create and delete records; upsert-only won't delete
+
+txtOwnerId: petclinic # Unique identifier to prevent conflicts with other clusters
+
+sources:
+  - ingress
+  - service
+
+extraArgs:
+  - --aws-zone-type=public # Only manage public hosted zones

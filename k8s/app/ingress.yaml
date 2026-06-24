@@ -15,10 +15,12 @@ metadata:
     alb.ingress.kubernetes.io/healthy-threshold-count: "2"
     alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
     alb.ingress.kubernetes.io/success-codes: "200"
+    external-dns.alpha.kubernetes.io/hostname: petclinic.fullstackprojects.dev
 spec:
   ingressClassName: alb
   rules:
-    - http:
+    - host: petclinic.fullstackprojects.dev
+      http:
         paths:
           - path: /
             pathType: Prefix
