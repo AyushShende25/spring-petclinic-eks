@@ -4,6 +4,8 @@ A production-style deployment of the Spring PetClinic application on Amazon EKS 
 
 ---
 
+<img width="991" height="601" alt="spring-petclinic drawio (1)" src="https://github.com/user-attachments/assets/a52c3cc5-473a-4569-81b3-71e6557ad7ec" />
+
 ## Features
 
 ### Application
@@ -196,3 +198,8 @@ readOnlyRootFilesystem: true
 * External Secrets Operator
 
 ---
+
+<img width="1440" height="900" alt="Screenshot 2026-06-25 at 1 50 56 AM" src="https://github.com/user-attachments/assets/9d42e9a6-ab33-438d-ab44-46ca260595fb" />
+<img width="1440" height="900" alt="Screenshot 2026-06-25 at 2 12 55 AM" src="https://github.com/user-attachments/assets/1fcd125c-76ee-4e1e-975b-8422d1c203e5" />
+<img width="1440" height="900" alt="Screenshot 2026-06-25 at 2 14 53 AM" src="https://github.com/user-attachments/assets/9c55f0ec-2d67-475c-951e-523c67843eb0" />
+
