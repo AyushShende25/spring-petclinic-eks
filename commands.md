@@ -106,3 +106,13 @@ helm install external-dns external-dns/external-dns \
   -n external-dns \
   -f external-dns-values.yaml
 kubectl get pods -n external-dns -l app.kubernetes.io/name=external-dns
+
+aws eks update-addon --cluster-name petclinic --addon-name vpc-cni --addon-version v1.22.2-eksbuild.1 \
+    --service-account-role-arn arn:aws:iam::651447471372:role/eksctl-petclinic-addon-vpc-cni-Role1-oFm1Am1JeTry \
+    --resolve-conflicts PRESERVE --configuration-values '{"env":{"AWS_VPC_K8S_CNI_EXTERNALSNAT":"true"}}'
+
+aws eks describe-addon --cluster-name petclinic --addon-name vpc-cni
+
+aws eks update-addon --cluster-name petclinic --addon-name vpc-cni --addon-version v1.22.2-eksbuild.1 \
+    --service-account-role-arn arn:aws:iam::651447471372:role/eksctl-petclinic-addon-vpc-cni-Role1-oFm1Am1JeTry \
+    --resolve-conflicts PRESERVE --configuration-values '{"enableNetworkPolicy": "true"}'

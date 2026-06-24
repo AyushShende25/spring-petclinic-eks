@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: petclinic-db-network-policy
+  namespace: pet-clinic-db
+spec:
+  podSelector:
+    matchLabels:
+      app: mysql
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: pet-clinic-app
+          podSelector:
+            matchLabels:
+              app: petclinic
+      ports:
+        - protocol: TCP
+          port: 3306
