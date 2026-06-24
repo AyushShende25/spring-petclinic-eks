@@ -17,11 +17,18 @@ docker push ayushshende9/pet-clinic:1.0.0
 
 kind create cluster --config k8s/cluster.yaml --name pet-clinic-kube-cluster
 
+kubectl api-resources
+
 kubectl apply -f k8s/db/secrets.yaml
 kubectl get secrets -n pet-clinic-db
 kubectl apply -f k8s/db/cm.yaml
+kubectl get cm
 kubectl apply -f k8s/db/service.yaml
+kubectl get svc
+kubectl apply -f k8s/db/storageclass.yaml
+kubectl get sc
 kubectl apply -f k8s/db/statefulset.yaml
+kubectl get sts
 kubectl get all -n pet-clinic-db
 kubectl logs mysql-0 -n pet-clinic-db
 
@@ -32,8 +39,10 @@ kubectl create secret docker-registry dockerhub-secret \
   --docker-email=<email> \
   -n pet-clinic-app
 kubectl delete secret dockerhub-secret -n pet-clinic-app
+kubectl apply -f k8s/app/secrets.yaml
 kubectl get secrets -n pet-clinic-app
-
+kubectl apply -f k8s/app/cm.yaml
+kubectl apply -f k8s/app/service.yaml
 kubectl apply -f k8s/app/deployment.yaml
 kubectl delete -f k8s/app/deployment.yaml
 kubectl rollout restart deployment petclinic-app -n pet-clinic-app
@@ -44,3 +53,10 @@ kubectl logs petclinic-app-56dbc4d9c6-s6wgx -n pet-clinic-app
 kubectl create sa dockerhub-sa -n pet-clinic-app
 kubectl get sa dockerhub-sa -n pet-clinic-app -o yaml
 kubectl edit sa dockerhub-sa -n pet-clinic-app
+
+eksctl create cluster -f k8s/eks-cluster.yaml
+
+kubectl config set-context --current --namespace=pet-clinic-db
+
+kubectl port-forward svc/petclinic-svc 8080:8080
+
